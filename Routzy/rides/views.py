@@ -1,52 +1,77 @@
-from django.shortcuts import render, redirect
-from .models import User, Ride, Booking
-from django.contrib.auth.hashers import make_password, check_password
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
+from .models import Ride, Booking
+from rest_framework.viewsets import ModelViewSet
+from .serializers import RideSerializer
+from django.contrib import messages
+from django.http import HttpResponseRedirect  # Add this import
 
+User = get_user_model()  # Reference to the custom User model
 
 # Home view (landing page)
 def home(request):
-    # Check if user is logged in
-    if request.session.get('user_id'):  # Check for the session variable
-        return redirect('rides_list')  # Redirect to Available Rides page
-    return render(request, 'home.html')  # Render the Home Page for non-logged-in users
+    if request.user.is_authenticated:  # Check if the user is logged in
+        return redirect('rides_list')
+    return render(request, 'home.html')
 
-# Login view
+
 def login_view(request):
+    # If user is already authenticated, redirect to home or another page
+    if request.user.is_authenticated:
+        print(f"User is already logged in: {request.user}")
+        return redirect('home')  # or 'rides_list' or any other view
+
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        user = User.objects.filter(email=email).first()
-        if user and check_password(password, user.password):
-            request.session['user_id'] = user.id
-            return redirect('rides_list')
-        return render(request, 'login.html', {'error': 'Invalid credentials'})
-    return render(request, 'login.html')
 
-# Add this function to handle logout
+        # Authenticate user
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            login(request, user)  # Log the user in and create a session
+            print(f"User logged in: {user}")  # Log to check user login
+
+            # Ensure 'next' URL is provided, otherwise default to 'rides_list'
+            next_url = request.POST.get('next', '') or 'rides_list'  # Default to 'rides_list' if 'next' is empty
+            return redirect(next_url)
+        else:
+            messages.error(request, 'Invalid credentials')
+            return render(request, 'login.html')  # Return to the login page with an error message
+
+    # Capture the 'next' parameter from GET
+    next_url = request.GET.get('next', '')  # If no next parameter is passed, it defaults to an empty string
+    return render(request, 'login.html', {'next': next_url})
+
+
+# Logout view
 def logout_view(request):
-    try:
-        del request.session['user_id']
-    except KeyError:
-        pass
+    logout(request)
     return redirect('home')
 
 
+# Signup view
 def signup(request):
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
         phone = request.POST['phone']
         password = request.POST['password']
-        hashed_password = make_password(password)
-        User.objects.create(name=name, email=email, phone=phone, password=hashed_password)
+
+        if User.objects.filter(email=email).exists():
+            return render(request, 'signup.html', {'error': 'Email already registered'})
+
+        user = User.objects.create_user(username=email, email=email, password=password, name=name, phone=phone)
+        user.save()
         return redirect('login')
     return render(request, 'signup.html')
 
-# Offer Ride view
+
+# Offer a Ride view
 @login_required
 def offer_ride(request):
     if request.method == "POST":
@@ -57,11 +82,8 @@ def offer_ride(request):
         seats_available = request.POST.get('seats_available')
         cost_per_seat = request.POST.get('cost_per_seat')
 
-        # Unwrap the SimpleLazyObject to get the actual user instance
-        user = User.objects.get(pk=request.user.id)
-
         Ride.objects.create(
-            user=user,
+            user=request.user,
             start_location=start_location,
             end_location=end_location,
             vehicle_type=vehicle_type,
@@ -69,29 +91,51 @@ def offer_ride(request):
             seats_available=seats_available,
             cost_per_seat=cost_per_seat
         )
-        return redirect('rides_list')  # Redirect to Available Rides page
+        return redirect('rides_list')
     return render(request, 'offer_ride.html')
 
-# List available rides
+
+# List all available rides
+@login_required
 def rides_list(request):
-    rides = Ride.objects.all()  # Query all rides
+    rides = Ride.objects.all()
     return render(request, 'rides_list.html', {'rides': rides})
 
+
 # Book a ride
+@login_required
 def book_ride(request, ride_id):
     ride = get_object_or_404(Ride, id=ride_id)
-    user_id = request.session.get('user_id')
 
-    if not user_id:
-        return redirect('login')
+    # Check if there are available seats
+    if ride.seats_available > 0:
+        if request.method == 'POST':
+            seats_booked = int(request.POST['seats_booked'])
 
-    # Create a booking for the logged-in user
-    Booking.objects.create(user_id=user_id, ride=ride)
+            # Ensure the number of seats to be booked does not exceed the available seats
+            if seats_booked > ride.seats_available:
+                messages.error(request, "Not enough available seats.")
+                return render(request, 'book_ride.html', {'ride': ride, 'error': "Not enough available seats."})
 
-    # Redirect to Available Rides page
-    return redirect('rides_list')
+            # Update the number of available seats
+            ride.seats_available -= seats_booked
+            ride.save()
+
+            # Optionally, you can add a booking entry in another model, send confirmation emails, etc.
+
+            # Redirect to rides list or booking confirmation page
+            messages.success(request, f"Successfully booked {seats_booked} seat(s)!")
+            return redirect('rides_list')  # or 'booking_confirmation' if you want a dedicated confirmation page
+        else:
+            # Show the booking page (GET request)
+            return render(request, 'book_ride.html', {'ride': ride})
+    else:
+        # No seats available
+        messages.error(request, "No available seats for this ride.")
+        return redirect('rides_list')
 
 
+# Filter rides based on location
 def filter_rides(request):
     query = request.GET.get('query', '').strip()
     filtered_rides = Ride.objects.filter(
@@ -101,5 +145,14 @@ def filter_rides(request):
     html = render_to_string('partials/rides_list.html', {'rides': filtered_rides})
     return JsonResponse({'html': html})
 
+
+# Chat Room
+@login_required
 def chat_room(request, room_name):
     return render(request, 'chat.html', {'room_name': room_name})
+
+
+# API for Ride ViewSet
+class RideViewSet(ModelViewSet):
+    queryset = Ride.objects.all()
+    serializer_class = RideSerializer
