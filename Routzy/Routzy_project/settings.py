@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rides',
     'channels',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -124,8 +125,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = "Routzy_project.asgi.application"
+# ASGI Configuration
+ASGI_APPLICATION = 'Routzy_project.asgi.application'
 
+# In-Memory Channel Layer
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',

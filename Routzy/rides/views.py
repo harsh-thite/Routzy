@@ -4,11 +4,15 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 
 # Home view (landing page)
 def home(request):
-    return render(request, 'home.html')
+    # Check if user is logged in
+    if request.session.get('user_id'):  # Check for the session variable
+        return redirect('rides_list')  # Redirect to Available Rides page
+    return render(request, 'home.html')  # Render the Home Page for non-logged-in users
 
 # Login view
 def login_view(request):
@@ -75,8 +79,16 @@ def rides_list(request):
 
 # Book a ride
 def book_ride(request, ride_id):
-    ride = Ride.objects.get(id=ride_id)
-    # Handle ride booking logic here
+    ride = get_object_or_404(Ride, id=ride_id)
+    user_id = request.session.get('user_id')
+
+    if not user_id:
+        return redirect('login')
+
+    # Create a booking for the logged-in user
+    Booking.objects.create(user_id=user_id, ride=ride)
+
+    # Redirect to Available Rides page
     return redirect('rides_list')
 
 
