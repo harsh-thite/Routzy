@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import User, Ride, Booking
 from django.contrib.auth.hashers import make_password, check_password
-
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 # Home view (landing page)
 def home(request):
@@ -56,3 +57,13 @@ def book_ride(request, ride_id):
     ride = Ride.objects.get(id=ride_id)
     # Handle ride booking logic here
     return redirect('rides_list')
+
+
+def filter_rides(request):
+    query = request.GET.get('query', '').strip()
+    filtered_rides = Ride.objects.filter(
+        start_location__icontains=query
+    ) | Ride.objects.filter(end_location__icontains=query)
+
+    html = render_to_string('partials/rides_list.html', {'rides': filtered_rides})
+    return JsonResponse({'html': html})
