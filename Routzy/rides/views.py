@@ -110,29 +110,18 @@ def book_ride(request, ride_id):
     # Check if there are available seats
     if ride.seats_available > 0:
         if request.method == 'POST':
-            seats_booked = int(request.POST['seats_booked'])
-
-            # Ensure the number of seats to be booked does not exceed the available seats
-            if seats_booked > ride.seats_available:
-                messages.error(request, "Not enough available seats.")
-                return render(request, 'book_ride.html', {'ride': ride, 'error': "Not enough available seats."})
-
-            # Update the number of available seats
-            ride.seats_available -= seats_booked
+            # Reduce the available seats after booking
+            ride.seats_available -= 1
             ride.save()
 
-            # Optionally, you can add a booking entry in another model, send confirmation emails, etc.
+            # Redirect to the success page after booking
+            return render(request, 'booking_success.html', {'ride': ride})
 
-            # Redirect to rides list or booking confirmation page
-            messages.success(request, f"Successfully booked {seats_booked} seat(s)!")
-            return redirect('rides_list')  # or 'booking_confirmation' if you want a dedicated confirmation page
-        else:
-            # Show the booking page (GET request)
-            return render(request, 'book_ride.html', {'ride': ride})
+        # If it's a GET request, show the booking page
+        return render(request, 'book_ride.html', {'ride': ride})
     else:
-        # No seats available
-        messages.error(request, "No available seats for this ride.")
-        return redirect('rides_list')
+        # If no seats available, show the failure page
+        return render(request, 'booking_failure.html', {'ride': ride})
 
 
 # Filter rides based on location
