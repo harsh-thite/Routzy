@@ -54,15 +54,11 @@ TEMPLATES = [
 # ASGI configuration
 ASGI_APPLICATION = 'Routzy_project.asgi.application'
 
-# Database configuration with PostgreSQL
+# Database configuration with SQLite
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'routzy_db',         # Replace with your database name
-        'USER': 'postgres',          # Replace with your PostgreSQL username
-        'PASSWORD': 'your_password', # Replace with your PostgreSQL password
-        'HOST': 'localhost',         # Replace with your PostgreSQL host
-        'PORT': '5432',              # Default port for PostgreSQL
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # SQLite database file
     }
 }
 
@@ -71,7 +67,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.DatabaseChannelLayer',
         'CONFIG': {
-            "database": "default",  # Use the default Django database
+            "database": "default",  # Use the default SQLite database
         },
     },
 }
