@@ -3,21 +3,14 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9&3%*l@dg7i8blm^1x35g&wh=5c-hcy+-g3(+sr48sbfcmmq!f'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,23 +51,32 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Routzy_project.wsgi.application'
+# ASGI configuration
+ASGI_APPLICATION = 'Routzy_project.asgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database configuration with PostgreSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'routzy_db',         # Replace with your database name
+        'USER': 'postgres',          # Replace with your PostgreSQL username
+        'PASSWORD': 'your_password', # Replace with your PostgreSQL password
+        'HOST': 'localhost',         # Replace with your PostgreSQL host
+        'PORT': '5432',              # Default port for PostgreSQL
     }
 }
 
+# Channels configuration with DatabaseChannelLayer
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.DatabaseChannelLayer',
+        'CONFIG': {
+            "database": "default",  # Use the default Django database
+        },
+    },
+}
 
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -90,10 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -102,40 +101,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
+# Static files
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ASGI Configuration
-ASGI_APPLICATION = 'Routzy_project.asgi.application'
-
-# In-Memory Channel Layer
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Change to your Redis server if it's not running locally
-        },
-    },
-}
-
-# AUTHENTICATION BACKENDS (Include custom email-based authentication)
+# Authentication settings
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
     'rides.backends.EmailAuthBackend',  # Custom backend for email authentication
 ]
 
-# Custom User Model
 AUTH_USER_MODEL = 'rides.User'
 
-# Session settings for persistent sessions
+# Session settings
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 3600  # Session expires after 1 hour
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
