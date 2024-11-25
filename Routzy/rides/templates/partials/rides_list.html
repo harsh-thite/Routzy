@@ -1,0 +1,21 @@
+{% for ride in rides %}
+<tr>
+    <td>{{ ride.start_location }}</td>
+    <td>{{ ride.end_location }}</td>
+    <td>{{ ride.vehicle_type }}</td>
+    <td>{{ ride.date_time }}</td>
+    <td>{{ ride.seats_available }}</td>
+    <td>{{ ride.cost_per_seat }}</td>
+    <td>
+        {% if request.session.user_id %}
+            <a href="{% url 'book_ride' ride.id %}" class="btn btn-success btn-sm">Book</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-secondary btn-sm">Login to Book</a>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="7" class="text-center">No rides available.</td>
+</tr>
+{% endfor %}

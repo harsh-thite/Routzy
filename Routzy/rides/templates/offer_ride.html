@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Offer a Ride - Routzy{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Offer a Ride</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="start_location" class="form-label">Start Location</label>
+            <input type="text" class="form-control" id="start_location" name="start_location" required>
+        </div>
+        <div class="mb-3">
+            <label for="end_location" class="form-label">End Location</label>
+            <input type="text" class="form-control" id="end_location" name="end_location" required>
+        </div>
+        <div class="mb-3">
+            <label for="vehicle_type" class="form-label">Vehicle Type</label>
+            <select class="form-select" id="vehicle_type" name="vehicle_type" required>
+                <option value="" disabled selected>Select a vehicle</option>
+                <option value="Car">Car</option>
+                <option value="Bike">Bike</option>
+                <option value="Auto Rickshaw">Auto Rickshaw</option>
+                <option value="Taxi">Taxi</option>
+                <option value="Bus">Bus</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="date_time" class="form-label">Date & Time</label>
+            <input type="datetime-local" class="form-control" id="date_time" name="date_time" required>
+        </div>
+        <div class="mb-3">
+            <label for="seats_available" class="form-label">Seats Available</label>
+            <input type="number" class="form-control" id="seats_available" name="seats_available" required>
+        </div>
+        <div class="mb-3">
+            <label for="cost_per_seat" class="form-label">Cost Per Seat ($)</label>
+            <input type="number" class="form-control" id="cost_per_seat" name="cost_per_seat" step="0.01" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Offer Ride</button>
+    </form>
+</div>
+{% endblock %}

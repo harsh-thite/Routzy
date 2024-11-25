@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Successful - Routzy{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Booking Successful!</h2>
+    <p>Your booking for the ride from {{ ride.start_location }} to {{ ride.end_location }} has been confirmed.</p>
+    <p><strong>Vehicle:</strong> {{ ride.vehicle_type }}</p>
+    <p><strong>Seats Booked:</strong> 1</p>
+    <p><strong>Total Cost:</strong> ${{ ride.cost_per_seat }}</p>
+    <a href="{% url 'rides_list' %}" class="btn btn-secondary">Go Back to Available Rides</a>
+</div>
+{% endblock %}

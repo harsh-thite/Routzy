@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Failed - Routzy{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Booking Failed</h2>
+    <p>Unfortunately, there are no available seats for this ride.</p>
+    <a href="{% url 'rides_list' %}" class="btn btn-secondary">Back to Available Rides</a>
+</div>
+{% endblock %}

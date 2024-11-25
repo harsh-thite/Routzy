@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Book a Ride - Routzy{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Book a Ride</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ ride.start_location }} to {{ ride.end_location }}</h5>
+            <p class="card-text">
+                <strong>Vehicle Type:</strong> {{ ride.vehicle_type }}<br>
+                <strong>Date & Time:</strong> {{ ride.date_time }}<br>
+                <strong>Seats Available:</strong> {{ ride.seats_available }}<br>
+                <strong>Cost Per Seat:</strong> ${{ ride.cost_per_seat }}
+            </p>
+            <form method="post" action="{% url 'book_ride' ride.id %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="seats_booked" class="form-label">Number of Seats to Book</label>
+                    <input type="number" class="form-control" id="seats_booked" name="seats_booked" min="1" max="{{ ride.seats_available }}" required>
+                </div>
+                <button type="submit" class="btn btn-success">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

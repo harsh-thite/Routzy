@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Home - Routzy{% endblock %}
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1>Welcome to Routzy</h1>
+    <p>Connecting commuters for convenient ridesharing.</p>
+    <a href="{% if request.session.user_id %}{% url 'rides_list' %}{% else %}{% url 'signup' %}{% endif %}" class="btn btn-primary btn-lg">
+        Get Started
+    </a>
+</div>
+{% endblock %}

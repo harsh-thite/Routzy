@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Routzy{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Login to Routzy</h2>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <!-- Hidden field to pass the 'next' URL -->
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <!-- Email field -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <!-- Password field -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+</div>
+{% endblock %}

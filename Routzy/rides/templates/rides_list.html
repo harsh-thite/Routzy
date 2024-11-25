@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Available Rides - Routzy{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Available Rides</h2>
+    {% if rides %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Start Location</th>
+                    <th>End Location</th>
+                    <th>Vehicle</th>
+                    <th>Date & Time</th>
+                    <th>Seats Available</th>
+                    <th>Cost Per Seat ($)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ride in rides %}
+                <tr>
+                    <td>{{ ride.start_location }}</td>
+                    <td>{{ ride.end_location }}</td>
+                    <td>{{ ride.vehicle_type }}</td>
+                    <td>{{ ride.date_time }}</td>
+                    <td>{{ ride.seats_available }}</td>
+                    <td>{{ ride.cost_per_seat }}</td>
+                    <td>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'book_ride' ride.id %}" class="btn btn-success btn-sm">Book</a>
+                        {% else %}
+                            <a href="{% url 'login' %}?next={% url 'book_ride' ride.id %}" class="btn btn-secondary btn-sm">Login to Book</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No rides available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
