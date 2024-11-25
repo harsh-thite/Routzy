@@ -1,53 +1,46 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import Message
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Get the room name from the URL
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f'chat_{self.room_name}'  # Group name for the room
+        self.room_group_name = f'chat_{self.room_name}'
 
         # Join the room group
         await self.channel_layer.group_add(
-            self.room_group_name,  # Group to join
-            self.channel_name  # Channel name (unique for each WebSocket connection)
+            self.room_group_name,
+            self.channel_name
         )
-        await self.accept()  # Accept the WebSocket connection
+        await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave the room group when the WebSocket is closed
+        # Leave the room group
         await self.channel_layer.group_discard(
-            self.room_group_name,  # Group to leave
-            self.channel_name  # Channel to discard
+            self.room_group_name,
+            self.channel_name
         )
 
     async def receive(self, text_data):
-        # Handle receiving a message from the WebSocket
-        data = json.loads(text_data)  # Parse the received JSON message
-        sender = data['sender']  # Extract sender name
-        message = data['message']  # Extract message content
+        data = json.loads(text_data)
+        sender = data['sender']
+        message = data['message']
 
-        # Save the message to the database
-        Message.objects.create(sender=sender, content=message)
-
-        # Send the message to the room group (broadcast to all connected clients in the room)
+        # Broadcast message to the room group
         await self.channel_layer.group_send(
-            self.room_group_name,  # The room group to send the message to
+            self.room_group_name,
             {
-                'type': 'chat_message',  # Message type (you define this handler below)
-                'sender': sender,  # Sender name
-                'message': message  # Message content
+                'type': 'chat_message',
+                'sender': sender,
+                'message': message
             }
         )
 
     async def chat_message(self, event):
-        # Handle receiving a message from the room group (broadcast)
         sender = event['sender']
         message = event['message']
 
-        # Send the message to the WebSocket (client)
+        # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'sender': sender,  # Sender name
-            'message': message  # Message content
+            'sender': sender,
+            'message': message
         }))

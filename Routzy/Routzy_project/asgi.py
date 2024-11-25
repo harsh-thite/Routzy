@@ -1,14 +1,19 @@
 import os
 from django.core.asgi import get_asgi_application
-from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-from rides.routing import websocket_urlpatterns  # This assumes your routing is in rides.routing
+from channels.auth import AuthMiddlewareStack
+from channels.security.websocket import AllowedHostsOriginValidator
+import rides.routing  # Correct app name
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Routzy_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
 
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),  # Handles HTTP requests as usual
-    "websocket": AuthMiddlewareStack(
-        URLRouter(websocket_urlpatterns)  # This will route WebSocket requests to the correct consumer
+    "http": get_asgi_application(),
+    "websocket": AllowedHostsOriginValidator(
+        AuthMiddlewareStack(
+            URLRouter(
+                rides.routing.websocket_urlpatterns
+            )
+        )
     ),
 })
