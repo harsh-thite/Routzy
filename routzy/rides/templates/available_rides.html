@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Available Rides</h1>
+<ul>
+    {% for ride in rides %}
+    <li>
+        <a href="{% url 'ride_details' ride.id %}">
+            {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.cost_per_seat }} per seat
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

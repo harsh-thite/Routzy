@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Ride Details</h1>
+<p>Start Location: {{ ride.start_location }}</p>
+<p>End Location: {{ ride.end_location }}</p>
+<p>Departure Time: {{ ride.departure_time }}</p>
+<p>Total Seats: {{ ride.total_seats }}</p>
+<p>Available Seats: {{ ride.available_seats }}</p>
+<p>Cost per Seat: {{ ride.cost_per_seat }}</p>
+<p>Driver: {{ ride.driver.username }}</p>
+<p>Vehicle: {{ ride.vehicle.get_type_display }} - {{ ride.vehicle.model }}</p>
+
+<h2>Chat</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ message_form.as_p }}
+    <button type="submit">Send Message</button>
+</form>
+
+<ul>
+    {% for message in messages %}
+    <li>{{ message.sender.username }}: {{ message.message }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

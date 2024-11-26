@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Chat</title>
+</head>
+<body>
+    <h1>Chat for Ride: {{ ride.start_location }} to {{ ride.end_location }}</h1>
+
+    <div>
+        <h2>Messages</h2>
+        <div id="chat-box">
+            {% for message in messages %}
+                <p><strong>{{ message.sender.username }}:</strong> {{ message.message }} <small>({{ message.timestamp }})</small></p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <h2>Send a Message</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <a href="{% url 'available_rides' %}">Back to Rides</a>
+</body>
+</html>
