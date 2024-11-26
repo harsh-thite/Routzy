@@ -62,10 +62,13 @@ class RideBooking(models.Model):
 
 
 class ChatMessage(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_messages_from_rides")
-    ride = models.ForeignKey('rides.Ride', on_delete=models.CASCADE, related_name="ride_chat_messages")
+    ride = models.ForeignKey('Ride', on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['timestamp']
+
     def __str__(self):
-        return f"Ride Message by {self.sender} at {self.timestamp}"
+        return f"Message by {self.sender.username} on Ride {self.ride.id}"

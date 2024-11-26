@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,26 +43,29 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Routzy</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Routzy</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Home</a>
+                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/rides/">Rides</a>
+                        <a class="nav-link" href="{% url 'available_rides' %}">Rides</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chat/">Chat</a>
+                        <a class="nav-link" href="{% url 'ride_chat' ride_id=1 %}">Chat</a> <!-- Example Ride ID -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile/">Profile</a>
+                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout/">Logout</a>
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'signup' %}">Signup</a>
                     </li>
                 </ul>
             </div>
@@ -72,7 +76,7 @@
     <div class="hero">
         <h1>Welcome to Routzy</h1>
         <p>Your ultimate solution for easy ride-sharing and seamless travel.</p>
-        <a href="/rides/" class="btn btn-custom">Explore Rides</a>
+        <a href="{% url 'available_rides' %}" class="btn btn-custom">Explore Rides</a>
     </div>
 
     <!-- Footer -->

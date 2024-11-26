@@ -1,6 +1,7 @@
+# chat/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Add any chat-related URLs here
+    path('ride/<int:ride_id>/chat/', views.ride_chat, name='ride_chat'),
 ]
