@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'chat',
     'social_django',
     'django_db_signals',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
