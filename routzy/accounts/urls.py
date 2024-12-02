@@ -10,7 +10,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
 
     # Logout (using Django's built-in LogoutView)
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),  # Redirects to the home after logout
+    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),  # Redirects to home after logout
 
     # Signup Page (custom Signup view)
     path('signup/', views.signup, name='signup'),
