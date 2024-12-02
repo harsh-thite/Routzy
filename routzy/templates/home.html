@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,41 +6,125 @@
     <title>Home - Routzy</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #0d1117; /* Darker background */
+            color: #c9d1d9;
         }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #161b22; /* Slightly lighter than the body */
+            transition: background-color 0.3s;
+        }
+        .navbar-brand {
+            color: #ffc107 !important;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #8b949e;
+            transition: color 0.3s;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #58a6ff;
+        }
+
+        /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://source.unsplash.com/1600x900/?travel');
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                        url('https://source.unsplash.com/1600x900/?night,city');
             background-size: cover;
             background-position: center;
-            color: white;
+            color: #f0f6fc;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
         }
         .hero h1 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: bold;
+            margin-bottom: 20px;
         }
         .hero p {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            margin-bottom: 30px;
         }
         .btn-custom {
-            background-color: #007bff;
-            color: white;
+            background-color: #21262d;
+            color: #58a6ff;
+            padding: 15px 30px;
+            border-radius: 50px;
             font-size: 1.2rem;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #58a6ff;
+            color: #21262d;
+        }
+
+        /* Features Section */
+        .features {
+            background-color: #161b22;
+            color: #c9d1d9;
+            padding: 60px 0;
+        }
+        .features .col-md-4 {
+            padding: 20px;
+        }
+        .features i {
+            font-size: 3rem;
+            color: #58a6ff;
+            margin-bottom: 15px;
+        }
+        .features h3 {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .features p {
+            font-size: 1.1rem;
+        }
+
+        /* Call-to-Action Section */
+        .cta {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            padding: 50px 0;
+            text-align: center;
+        }
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .cta a {
+            background-color: #ffc107;
+            color: #0d1117;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .cta a:hover {
+            background-color: #f0a500;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #161b22;
+            color: #8b949e;
+            padding: 20px 0;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <!-- Navbar Section -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">Routzy</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -50,7 +133,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'available_rides' %}">Rides</a>
@@ -79,8 +162,40 @@
         <a href="{% url 'available_rides' %}" class="btn btn-custom">Explore Rides</a>
     </div>
 
+    <!-- Features Section -->
+    <section class="features text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="bi bi-car-front-fill"></i>
+                    <h3>Easy to Use</h3>
+                    <p>Seamlessly book or offer rides with just a few clicks.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <h3>Track Your Journey</h3>
+                    <p>Real-time updates ensure you're always on the right path.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="bi bi-people-fill"></i>
+                    <h3>Find Your Match</h3>
+                    <p>Choose ride partners based on preferences and ratings.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call-to-Action Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Explore?</h2>
+            <p>Join thousands of users sharing and saving together.</p>
+            <a href="{% url 'signup' %}">Sign Up Now</a>
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="bg-dark text-center text-white py-4">
+    <footer>
         <p>&copy; 2024 Routzy. All Rights Reserved.</p>
     </footer>
 

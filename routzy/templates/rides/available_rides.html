@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Available Rides</h1>
-<ul>
-    {% for ride in rides %}
-    <li>
-        <a href="{% url 'ride_details' ride.id %}">
-            {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.cost_per_seat }} per seat
-        </a>
-    </li>
-    {% endfor %}
-</ul>
+<div class="container py-5">
+    <h1 class="text-center mb-5 text-warning">Available Rides</h1>
+    <div class="row">
+        {% for ride in rides %}
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-light shadow-lg rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">{{ ride.start_location }} to {{ ride.end_location }}</h5>
+                    <p class="card-text">Cost per seat: <strong>{{ ride.cost_per_seat }}</strong></p>
+                    <a href="{% url 'ride_details' ride.id %}" class="btn btn-warning w-100 py-2 rounded-pill">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-light">No rides available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
