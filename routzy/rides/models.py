@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Vehicle(models.Model):
     VEHICLE_TYPES = [
         ('CAR', 'Car'),
