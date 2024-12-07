@@ -6,7 +6,7 @@ urlpatterns = [
     # Home Page
     path('', views.home, name='home'),
 
-    # Login's Page (using Django's built-in LoginView)
+    # Login Page (using Django's built-in LoginView)
     path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
 
     # Logout' (using Django's built-in Logout-View)
