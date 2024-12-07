@@ -15,6 +15,6 @@ urlpatterns = [
     # Signup' Page (Custom Signup View)
     path('signup/', views.signup, name='signup'),
 
-    # User Profile Page
+    # User' Profile Page
     path('profile/', views.profile, name='profile'),
 ]
