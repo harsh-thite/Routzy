@@ -12,9 +12,9 @@ urlpatterns = [
     # Logout (using Django's built-in Logout-View)
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),  # Redirects to home after logout
 
-    # Signup' Page (Custom Signup View)
+    # Signup Page (Custom Signup View)
     path('signup/', views.signup, name='signup'),
 
-    # User' Profile Page
+    # User Profile Page
     path('profile/', views.profile, name='profile'),
 ]
