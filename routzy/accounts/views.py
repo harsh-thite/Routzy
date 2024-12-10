@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import ProfileForm
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+
 
 def home(request):
     return render(request, 'home.html')
