@@ -30,3 +30,21 @@ def profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'accounts/profile.html', {'form': form})
+
+# Login View
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('home')  # Redirect to 'home'
+        else:
+            return render(request, 'login.html', {'error': 'Invalid credentials'})
+    return render(request, 'login.html')
+
+# Logout View
+def logout(request):
+    auth_logout(request)
+    return redirect('home')  # Redirect to 'home'
