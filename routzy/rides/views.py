@@ -47,12 +47,13 @@ def ride_details(request, ride_id):
 def book_ride(request, ride_id):
     ride = get_object_or_404(Ride, id=ride_id)
     if ride.available_seats > 0:
-        RideBooking.objects.create(ride=ride, passenger=request.user)
+        Booking.objects.create(user=request.user, ride=ride)
         ride.available_seats -= 1
         ride.save()
-        return redirect('ride_details', ride_id=ride.id)
+        messages.success(request, "Ride booked successfully!")
     else:
-        return redirect('available_rides')
+        messages.error(request, "No available seats for this ride.")
+    return redirect('available_rides')
 
 @login_required
 def my_rides(request):
