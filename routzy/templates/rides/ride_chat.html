@@ -4,28 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ride Chat</title>
+    <style>
+        .chat-box {
+            max-height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message .sender {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Chat for Ride: {{ ride.start_location }} to {{ ride.end_location }}</h1>
-
-    <div>
-        <h2>Messages</h2>
-        <div id="chat-box">
-            {% for message in messages %}
-                <p><strong>{{ message.sender.username }}:</strong> {{ message.message }} <small>({{ message.timestamp }})</small></p>
-            {% endfor %}
-        </div>
+    <h1>Chat for Ride: {{ ride.title }}</h1>
+    <div class="chat-box">
+        {% for msg in messages %}
+            <div class="message">
+                <span class="sender">{{ msg.sender.username }}:</span>
+                <span class="content">{{ msg.content }}</span>
+                <small class="timestamp">{{ msg.timestamp }}</small>
+            </div>
+        {% endfor %}
     </div>
-
-    <div>
-        <h2>Send a Message</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Send</button>
-        </form>
-    </div>
-
-    <a href="{% url 'available_rides' %}">Back to Rides</a>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <textarea name="message" rows="3" placeholder="Type your message..."></textarea><br>
+        <button type="submit">Send</button>
+    </form>
 </body>
 </html>
