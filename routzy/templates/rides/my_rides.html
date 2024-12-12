@@ -1,31 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>My Rides</h1>
+<div class="container py-5">
+    <h1 class="text-warning text-center mb-5">My Rides</h1>
 
-<h2>Offered Rides</h2>
-<ul>
-    {% for ride in offered_rides %}
-    <li>
-        <a href="{% url 'ride_details' ride.id %}">
-            {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.cost_per_seat }} per seat
-        </a>
-    </li>
-    {% empty %}
-    <li>You have not offered any rides yet.</li>
-    {% endfor %}
-</ul>
+    <h2 class="text-light">Offered Rides</h2>
+    <ul>
+        {% for ride in offered_rides %}
+        <li>
+            <a href="{% url 'ride_details' ride.id %}">
+                {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.cost_per_seat }} per seat
+            </a>
+        </li>
+        {% empty %}
+        <li>You have not offered any rides yet.</li>
+        {% endfor %}
+    </ul>
 
-<h2>Booked Rides</h2>
-<ul>
-    {% for booking in booked_rides %}
-    <li>
-        <a href="{% url 'ride_details' booking.ride.id %}">
-            {{ booking.ride.start_location }} to {{ booking.ride.end_location }} - {{ booking.ride.cost_per_seat }} per seat
-        </a>
-    </li>
-    {% empty %}
-    <li>You have not booked any rides yet.</li>
-    {% endfor %}
-</ul>
+    <h2 class="text-light mt-4">Booked Rides</h2>
+    <ul>
+        {% for booking in booked_rides %}
+        <li>
+            <a href="{% url 'ride_details' booking.ride.id %}">
+                {{ booking.ride.start_location }} to {{ booking.ride.end_location }} - {{ booking.ride.cost_per_seat }} per seat
+            </a>
+            <form method="post" action="{% url 'cancel_booking' booking.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger mt-2">Cancel Booking</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>You have not booked any rides yet.</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
