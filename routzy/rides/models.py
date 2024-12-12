@@ -7,7 +7,7 @@ class Vehicle(models.Model):
         ('BIKE', 'Bike'),
         ('TAXI', 'Taxi'),
         ('CAB', 'Cab'),
-        ('AUTO', 'Auto Rickshaw')
+        ('AUTO', 'Auto Rickshaw'),
     ]
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,7 +34,7 @@ class Ride(models.Model):
     STATUS_CHOICES = [
         ('OPEN', 'Open'),
         ('FULL', 'Full'),
-        ('COMPLETED', 'Completed')
+        ('COMPLETED', 'Completed'),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='OPEN')
 
@@ -44,14 +44,17 @@ class Ride(models.Model):
         return f"{self.start_location} to {self.end_location} by {self.driver.username}"
 
 
-class Booking(models.Model):  # NEW
+class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE, related_name='bookings')
     booked_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Booking by {self.user.username} for Ride {self.ride.id}"
+
 
 class ChatMessage(models.Model):
-    ride = models.ForeignKey('Ride', on_delete=models.CASCADE, related_name='messages')
+    ride = models.ForeignKey(Ride, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
