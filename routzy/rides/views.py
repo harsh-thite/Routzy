@@ -58,7 +58,7 @@ def book_ride(request, ride_id):
 @login_required
 def my_rides(request):
     offered_rides = request.user.offered_rides.all()
-    booked_rides = RideBooking.objects.filter(passenger=request.user)
+    booked_rides = Booking.objects.filter(passenger=request.user)
     return render(request, 'rides/my_rides.html', {'offered_rides': offered_rides, 'booked_rides': booked_rides})
 
 def ride_chat(request, ride_id):
@@ -69,3 +69,14 @@ def ride_chat(request, ride_id):
         'ride': ride,
         'chat_messages': chat_messages
     })
+
+
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    ride = booking.ride
+    ride.available_seats += 1
+    ride.save()
+    booking.delete()
+    messages.success(request, "Booking canceled successfully!")
+    return redirect('my_rides')
