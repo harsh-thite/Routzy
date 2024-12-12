@@ -199,6 +199,7 @@
     </section>
 
     <!-- Call-to-Action Section -->
+    {% if not user.is_authenticated %}
     <section class="cta">
         <div class="container">
             <h2>Ready to Explore?</h2>
@@ -206,6 +207,7 @@
             <a href="{% url 'signup' %}">Sign Up Now</a>
         </div>
     </section>
+    {% endif %}
 
     <!-- Footer -->
     <footer>
