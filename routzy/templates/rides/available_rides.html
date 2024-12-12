@@ -10,7 +10,11 @@
                 <div class="card-body">
                     <h5 class="card-title text-warning">{{ ride.start_location }} to {{ ride.end_location }}</h5>
                     <p class="card-text">Cost per seat: <strong>{{ ride.cost_per_seat }}</strong></p>
-                    <a href="{% url 'ride_details' ride.id %}" class="btn btn-warning w-100 py-2 rounded-pill">View Details</a>
+                    <a href="{% url 'ride_details' ride.id %}" class="btn btn-warning w-100 py-2 rounded-pill mb-2">View Details</a>
+                    <form method="post" action="{% url 'book_ride' ride.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success w-100 py-2 rounded-pill">Book Now</button>
+                    </form>
                 </div>
             </div>
         </div>
