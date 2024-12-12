@@ -13,5 +13,5 @@ class VehicleForm(forms.ModelForm):
 
 class MessageForm(forms.ModelForm):
     class Meta:
-        model = ChatMessage
+        model = Message
         fields = ['message']
