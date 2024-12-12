@@ -44,20 +44,10 @@ class Ride(models.Model):
         return f"{self.start_location} to {self.end_location} by {self.driver.username}"
 
 
-class RideBooking(models.Model):
+class Booking(models.Model):  # NEW
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE, related_name='bookings')
-    passenger = models.ForeignKey(User, on_delete=models.CASCADE)
-    seats_booked = models.IntegerField(default=1)
-    booking_time = models.DateTimeField(auto_now_add=True)
-
-    STATUS_CHOICES = [
-        ('CONFIRMED', 'Confirmed'),
-        ('CANCELLED', 'Cancelled')
-    ]
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='CONFIRMED')
-
-    def __str__(self):
-        return f"{self.passenger.username} - {self.ride}"
+    booked_at = models.DateTimeField(auto_now_add=True)
 
 
 class ChatMessage(models.Model):
