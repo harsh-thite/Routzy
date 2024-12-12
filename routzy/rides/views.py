@@ -75,3 +75,25 @@ def cancel_booking(request, booking_id):
     booking.delete()
     messages.success(request, "Booking canceled successfully!")
     return redirect('my_rides')
+
+
+@login_required
+def ride_chat(request, ride_id):
+    # Retrieve the ride object
+    ride = get_object_or_404(Ride, id=ride_id)
+
+    if request.method == "POST":
+        # Save the chat message if the user submitted it
+        message_content = request.POST.get("message")
+        if message_content:
+            Message.objects.create(
+                ride=ride,
+                sender=request.user,
+                content=message_content
+            )
+
+    # Retrieve all messages related to the ride
+    messages = Message.objects.filter(ride=ride).order_by("timestamp")
+
+    # Render the template with the ride and messages context
+    return render(request, "ride_chat.html", {"ride": ride, "messages": messages})

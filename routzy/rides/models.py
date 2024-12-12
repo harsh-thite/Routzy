@@ -53,7 +53,7 @@ class Booking(models.Model):
         return f"Booking by {self.user.username} for Ride {self.ride.id}"
 
 
-class ChatMessage(models.Model):
+class Message(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
