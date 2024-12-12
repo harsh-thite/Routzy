@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Vehicle, Ride, Booking, Message
-from .forms import RideOfferForm, VehicleForm, ChatMessageForm
+from .forms import RideOfferForm, VehicleForm, MessageForm
 from django.contrib import messages
 
 @login_required
@@ -33,7 +33,7 @@ def available_rides(request):
 def ride_details(request, ride_id):
     ride = get_object_or_404(Ride, id=ride_id)
     if request.method == 'POST':
-        message_form = ChatMessageForm(request.POST)
+        message_form = MessageForm(request.POST)
         if message_form.is_valid():
             chat_message = message_form.save(commit=False)
             chat_message.ride = ride
@@ -41,7 +41,7 @@ def ride_details(request, ride_id):
             chat_message.save()
             return redirect('ride_details', ride_id=ride.id)
     else:
-        message_form = ChatMessageForm()
+        message_form = MessageForm()
     messages_list = ride.messages.all()
     return render(request, 'rides/ride_details.html', {'ride': ride, 'messages': messages_list, 'message_form': message_form})
 
