@@ -41,7 +41,7 @@ body {
     opacity: 0.9;
 }
 
-/* Features Section */
+/* Feature Section */
 .features .col-md-4 i {
     font-size: 3rem;
     margin-bottom: 15px;
@@ -51,7 +51,7 @@ body {
     transform: scale(1.2);
 }
 
-/* Calls to Action */
+/* Call to Action */
 .cta {
     background-color: #212529;
     color: #ffc107;
