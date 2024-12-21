@@ -1,6 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+/* Offer Ride Page Styles */
+.offer-ride-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #1c1c1c;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.offer-ride-title {
+    font-size: 2.5rem;
+    color: #ffc107;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+.offer-ride-form input,
+.offer-ride-form select,
+.offer-ride-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.offer-ride-form input:focus,
+.offer-ride-form select:focus,
+.offer-ride-form textarea:focus {
+    border-color: #ffc107;
+    outline: none;
+}
+
+.btn-submit {
+    padding: 10px 20px;
+    background-color: #ffc107;
+    color: #121212;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #ffda47;
+    transform: scale(1.05);
+}
+</style>
+
 <div class="offer-ride-container">
     <h1 class="offer-ride-title">Offer a Ride</h1>
     <form method="post" class="offer-ride-form">
