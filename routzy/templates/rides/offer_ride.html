@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Offer a Ride</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ ride_form.as_p }}
-    {{ vehicle_form.as_p }}
-    <button type="submit">Offer Ride</button>
-</form>
+<div class="offer-ride-container">
+    <h1 class="offer-ride-title">Offer a Ride</h1>
+    <form method="post" class="offer-ride-form">
+        {% csrf_token %}
+        {{ ride_form.as_p }}
+        {{ vehicle_form.as_p }}
+        <button type="submit" class="btn-submit">Offer Ride</button>
+    </form>
+</div>
 {% endblock %}
