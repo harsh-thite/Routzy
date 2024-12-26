@@ -49,4 +49,4 @@ def login(request):
 # Logout View
 def logout(request):
     auth_logout(request)
-    return redirect('home')  # Redirects to 'home'
+    return redirect('home')  # Redirect to 'home'
