@@ -64,3 +64,4 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message by {self.sender.username} on Ride {self.ride.id}"
+
