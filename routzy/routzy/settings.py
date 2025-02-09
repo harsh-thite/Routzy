@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-=&79f1-ishd-8$%^ee2kpk((577ks3*h2m*_5m%mh*^9m69-q!
 # SECURITY WARNING: Don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["routzy.onrender.com"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -126,4 +125,4 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/'  # Redirects to the home page after logout
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
