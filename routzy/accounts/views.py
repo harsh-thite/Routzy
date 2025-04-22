@@ -46,7 +46,3 @@ def login(request):
             return render(request, 'login.html', {'error': 'Invalid credentials'})
     return render(request, 'login.html')
 
-# Logout View
-def logout(request):
-    auth_logout(request)
-    return redirect('home')  # Redirect to 'home'
