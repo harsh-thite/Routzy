@@ -45,4 +45,3 @@ def login(request):
         else:
             return render(request, 'login.html', {'error': 'Invalid credentials'})
     return render(request, 'login.html')
-
