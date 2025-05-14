@@ -29,3 +29,4 @@ def ride_chat(request, ride_id):
 
     messages = ride.chat_messages.all()  # Fetch chat messages for the ride
     return render(request, 'chat/ride_chat.html', {'ride': ride, 'messages': messages, 'form': form})
+
